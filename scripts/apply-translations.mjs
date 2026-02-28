@@ -406,6 +406,14 @@ const TRANSLATIONS = {
     '"This takes longer: Getting status"': '"耗时较长：正在获取状态"',
     '"Unstage hunk"': '"取消暂存代码块"',
     '"vault backup: {{date}}"': '"仓库备份：{{date}}"',
+
+    // ========== 从123.txt提取的设置描述 ==========
+    '"Commit-and-sync with default settings means staging everything -> committing -> pulling -> pushing. Ideally this is a single action that you do regularly to keep your local and remote repository in sync."': '"提交并同步的默认设置意味着暂存所有内容 -> 提交 -> 拉取 -> 推送。理想情况下，这是您定期执行的单个操作，用于保持本地和远程仓库同步。"',
+    '"Obsidian must be restarted for the changes to take affect."': '"必须重新启动 Obsidian 才能使更改生效。"',
+    '"Specify the path to the Git binary/executable. Git should already be in your PATH. Should only be necessary for a custom Git installation."': '"指定 Git 二进制/可执行文件的路径。Git 应该已经在您的 PATH 中。通常只有自定义 Git 安装时才需要。"',
+    '"Use each line for a new environment variable in the format KEY=VALUE ."': '"每行使用一个新的环境变量，格式为 KEY=VALUE。"',
+    '"Removing previously added environment variables will not take effect until Obsidian is restarted."': '"删除之前添加的环境变量需要重新启动 Obsidian 才能生效。"',
+    '"If you like this Plugin, consider donating to support continued development."': '"如果您喜欢这个插件，请考虑捐赠以支持持续开发。"',
 };
 
 // 需要特殊处理的模板字符串（包含换行等）
@@ -418,6 +426,179 @@ const TEMPLATE_TRANSLATIONS = [
     {
         search: /"tracked file"/g,
         replace: '"已跟踪文件"'
+    },
+    // ========== 动态模板字符串翻译 ==========
+    {
+        // Auto ${n} interval (minutes)
+        search: /setName\(`Auto \$\{n\} interval \(minutes\)`\)/g,
+        replace: 'setName(`自动${n}间隔（分钟）`)'
+    },
+    {
+        // Auto ${n} after stopping file edits
+        search: /setName\(`Auto \$\{n\} after stopping file edits`\)/g,
+        replace: 'setName(`停止编辑文件后自动${n}`)'
+    },
+    {
+        // Auto ${n} after latest commit
+        search: /setName\(`Auto \$\{n\} after latest commit`\)/g,
+        replace: 'setName(`最新提交后自动${n}`)'
+    },
+    {
+        // Auto ${n} only staged files
+        search: /setName\(`Auto \$\{n\} only staged files`\)/g,
+        replace: 'setName(`自动${n}仅暂存文件`)'
+    },
+    {
+        // Specify custom commit message on auto ${n}
+        search: /setName\(`Specify custom commit message on auto \$\{n\}`\)/g,
+        replace: 'setName(`指定自动${n}的自定义提交信息`)'
+    },
+    {
+        // Commit message on auto ${n}
+        search: /setName\(`Commit message on auto \$\{n\}`\)/g,
+        replace: 'setName(`自动${n}的提交信息`)'
+    },
+    {
+        // changes every X minutes
+        search: /changes every X minutes\. Set to 0 \(default\) to disable\. \(See below setting for further configuration!\)/g,
+        replace: '每 X 分钟更改一次。设置为 0（默认值）以禁用。（请参阅下方的设置以进行进一步配置！）'
+    },
+    {
+        // If turned on, sets last auto ${n} timestamp
+        search: /If turned on, sets last auto \$\{n\} timestamp to the latest commit timestamp\. This reduces the frequency of auto \$\{n\} when doing manual commits\./g,
+        replace: '如果启用，将上次自动${n}时间戳设置为最新提交时间戳。这可以减少手动提交时自动${n}的频率。'
+    },
+    {
+        // If turned on, only staged files are committed
+        search: /If turned on, only staged files are committed on \$\{n\}\. If turned off, all changed files are committed\./g,
+        replace: '如果启用，则只有暂存的文件会在${n}时提交。如果禁用，所有更改的文件都会被提交。'
+    },
+    {
+        // Committed message
+        search: /`Committed\$\{[^}]+\} \$\{[^}]+\}\s*\$\{[^}]+\s*\? "file" : "files"\s*\}`/g,
+        replace: '`已提交${roughly ? " 约" : ""} ${committedFiles} ${committedFiles == 1 ? "个文件" : "个文件"}`'
+    },
+    {
+        // Pushed to remote
+        search: /`Pushed to remote`/g,
+        replace: '`已推送到远程`'
+    },
+    {
+        // Pushed X file(s) to remote
+        search: /`Pushed \$\{pushedFiles\} \$\{pushedFiles == 1 \? "file" : "files"\} to remote`/g,
+        replace: '`已推送 ${pushedFiles} ${pushedFiles == 1 ? "个文件" : "个文件"} 到远程`'
+    },
+    // ========== 从123.txt提取的模板字符串 ==========
+    {
+        // Sets the relative path to the vault
+        search: /Sets the relative path to the vault from which the Git binary should be executed\./g,
+        replace: '设置执行 Git 二进制文件的仓库相对路径。'
+    },
+    {
+        // Corresponds to the GIT_DIR
+        search: /Corresponds to the GIT_DIR environment variable\. Requires restart of Obsidian to take effect\./g,
+        replace: '对应于 GIT_DIR 环境变量。需要重新启动 Obsidian 才能生效。'
+    },
+    {
+        // Committed message
+        search: /Committed\$\{h\?" approx\.":""\} \$\{d\} \$\{d==1\?"文件":"文件"\}/g,
+        replace: '已提交${h?" 约":""} ${d} ${d==1?"个文件":"个文件"}'
+    },
+    {
+        // The commit hash, author name and authoring date
+        search: /The commit hash, author name and authoring date can all be individually toggled\.<\/br>Hide everything, to only show the age-colored sidebar\./g,
+        replace: '提交哈希、作者名称和创作日期都可以单独切换。</br>隐藏所有内容，仅显示按年龄着色的侧边栏。'
+    },
+    {
+        // Set the style for the diff view
+        search: /Set the style for the diff view\. Note that the actual diff in "分屏" mode is not generated by Git, but the editor itself instead so it may differ from the diff generated by Git\. One advantage of this is that you can edit the text in that view\./g,
+        replace: '设置差异视图的样式。请注意，"分屏"模式下的实际差异不是由 Git 生成的，而是由编辑器本身生成的，因此可能与 Git 生成的差异不同。这样做的一个优点是您可以在该视图中编辑文本。'
+    },
+    {
+        // Most of the time you want to push after committing
+        search: /Most of the time you want to push after committing\. Turning this off turns a commit-and-sync action into commit \$\{[^}]+\}only\. It will still be called commit-and-sync\./g,
+        replace: '大多数情况下，您希望在提交后推送。关闭此项将使提交并同步操作变为仅提交${i.settings.pullBeforePush?"和拉取 ":""}。它仍将被称为提交并同步。'
+    },
+    {
+        // On commit-and-sync, pull commits as well
+        search: /On commit-and-sync, pull commits as well\. Turning this off turns a commit-and-sync action into commit \$\{[^}]+\}only\./g,
+        replace: '在提交并同步时，同时拉取提交。关闭此项将使提交并同步操作变为仅提交${i.settings.disablePush?"":"和推送 "}。'
+    },
+    // ========== 从123.txt提取的更多模板字符串 ==========
+    {
+        // Feature guide and quick examples
+        search: />Feature guide and quick examples<\//g,
+        replace: '>功能指南和快速示例<'
+    },
+    {
+        // "提交并同步" and "pull" takes care of submodules
+        search: /"提交并同步" and "pull" takes care of submodules\. Missing features: Conflicted files, count of pulled\/pushed\/committed files\. Tracking branch needs to be set for each submodule\./g,
+        replace: '"提交并同步"和"拉取"会处理子模块。缺失的功能：冲突文件、已拉取/已推送/已提交文件的计数。每个子模块都需要设置跟踪分支。'
+    },
+    {
+        // only required if the Git repository is below the vault root directory
+        search: /only required if the Git repository is below the vault root directory\./g,
+        replace: '仅当 Git 仓库位于仓库根目录下方时才需要。'
+    },
+    {
+        // Debugging and logging
+        search: /Debugging and logging:/g,
+        replace: '调试和日志：'
+    },
+    {
+        // Requires the ${n} interval not to be 0.
+        search: /Requires the \$\{n\} interval not to be 0\./g,
+        replace: '要求${n}间隔不为 0。'
+    },
+    {
+        // If turned on, do auto ${n} every X minutes after stopping file edits
+        search: /If turned on, do auto \$\{n\} every \$\{[^}]+\} after stopping file edits\./g,
+        replace: '如果启用，将在停止编辑文件后每隔${iR(i.settings.autoSaveInterval)}自动${n}。'
+    },
+    {
+        // This also prevents auto ${n} while editing a file
+        search: /This also prevents auto \$\{n\} while editing a file\. If turned off, it's independent from the last file edit\./g,
+        replace: '这也可以防止在编辑文件时自动${n}。如果关闭，它与上次文件编辑无关。'
+    },
+    {
+        // Specify custom date format. E.g. (partial match for already translated part)
+        search: /Specify custom date format\. E\.g\./g,
+        replace: '指定自定义日期格式。例如：'
+    },
+    {
+        // Add "暂存", "取消暂存" and "添加到 .gitignore" actions to the file menu
+        search: /Add "暂存", "取消暂存" and "添加到 \.gitignore" actions to the file menu\./g,
+        replace: '将"暂存"、"取消暂存"和"添加到 .gitignore"操作添加到文件菜单。'
+    },
+    {
+        // Mostly used to set the path to the Git repository
+        search: /Mostly used to set the path to the Git repository,/g,
+        replace: '主要用于设置 Git 仓库路径，'
+    },
+    {
+        // You can always see the logs of this and every other plugin by opening the console with
+        search: /You can always see the logs of this and every other plugin by opening the console with/g,
+        replace: '您始终可以通过打开控制台来查看此插件和所有其他插件的日志，方法是'
+    },
+    {
+        // for more formats.
+        search: /for more formats\./g,
+        replace: '了解更多格式。'
+    },
+    {
+        // Staged Changes (no quotes in HTML)
+        search: />Staged Changes</g,
+        replace: '>已暂存的更改<'
+    },
+    {
+        // which is (Chinese comma)
+        search: /， which is 仅当/g,
+        replace: '，仅当'
+    },
+    {
+        // Use "\\" instead of "/" on Windows.
+        search: /Use "\\\\" instead of "\/" on Windows\./g,
+        replace: '在 Windows 上使用 "\\\\" 代替 "/"。'
     },
 ];
 
