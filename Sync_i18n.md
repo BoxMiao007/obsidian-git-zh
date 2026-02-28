@@ -44,6 +44,7 @@ git diff --name-only --diff-filter=U
 git add .
 git commit -m "merge: 同步上游更新"
 ```
+注意：同步上游的时候README.md文件如有更新即进行同步汉化，如没有即保持原样，README.md必须为中文
 
 ---
 
