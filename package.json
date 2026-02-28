@@ -1,7 +1,7 @@
 {
     "name": "obsidian-git",
     "version": "2.37.1",
-    "description": "Integrate Git version control with automatic backup and other advanced features in Obsidian.md",
+    "description": "在 Obsidian.md 中集成 Git 版本控制，自动备份及其他高级功能。（Integrate Git version control with automatic backup and other advanced features in Obsidian.md）",
     "main": "main.js",
     "scripts": {
         "dev": "node esbuild.config.mjs dev",
@@ -38,6 +38,7 @@
         "obsidian": "^1.11.4",
         "prettier": "3.3.2",
         "prettier-plugin-svelte": "^3.4.1",
+        "sass": "^1.97.3",
         "scss": "^0.2.4",
         "standard-version": "^9.5.0",
         "svelte-check": "^4.3.6",

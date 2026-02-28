@@ -2,9 +2,10 @@
     "author": "Vinzent",
     "authorUrl": "https://github.com/Vinzent03",
     "id": "obsidian-git",
-    "name": "Git",
-    "description": "Integrate Git version control with automatic backup and other advanced features.",
+    "name": "Git (中文版)",
+    "description": "在 Obsidian.md 中集成 Git 版本控制，自动备份及其他高级功能。",
     "isDesktopOnly": false,
     "fundingUrl": "https://ko-fi.com/vinzent",
-    "version": "2.37.1"
+    "version": "2.37.1",
+    "minAppVersion": "0.12.0"
 }
