@@ -2,7 +2,7 @@
 
 一个强大的 [Obsidian.md](Obsidian.md) 社区插件，将 Git 集成直接带入您的仓库。自动提交、拉取、推送并查看您的更改——一切尽在 Obsidian 中完成。
 
-> 📌 **这是 [obsidian-git](https://github.com/denolehov/obsidian-git) 的中文本地化版本**
+> 📌 **这是 [obsidian-git](https://github.com/BoxMiao007/obsidian-git-zh) 的中文本地化版本**
 
 ## 📚 文档
 
