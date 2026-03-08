@@ -96,6 +96,7 @@ const TRANSLATIONS = {
     '"Show the current branch in the status bar."': '"在状态栏中显示当前分支。"',
     '"Recommended to use Personal Access Token instead of password. Not needed when SSH is set up."': '"建议使用个人访问令牌而不是密码。设置 SSH 时不需要。"',
     '"Specify custom hostname for every device."': '"为每个设备指定自定义主机名。"',
+    '"Specify custom hostname for every device. Defaults to the OS hostname if not set on desktop."': '"为每个设备指定自定义主机名。桌面端如未设置则默认使用操作系统主机名。"',
     '"Decide how to integrate commits from your remote branch into your local branch."': '"决定如何将远程分支的提交集成到本地分支中。"',
     '"Decide how to solve conflicts when pulling remote changes. This can be used to favor your local changes or the remote changes automatically."': '"决定拉取远程更改时如何解决冲突。可用于自动选择本地更改或远程更改。"',
     '"This allows you to see your changes right in your editor via colored markers and stage/reset/preview individual hunks."': '"这允许您通过彩色标记在编辑器中直接查看更改，并暂存/重置/预览单个代码块。"',
