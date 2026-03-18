@@ -793,7 +793,7 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
                     cb.onChange(async (value) => {
                         await plugin.gitManager.setConfig(
                             "user.name",
-                            value == "" ? undefined : value
+                            value === "" ? undefined : value
                         );
                     });
                 });
@@ -808,7 +808,7 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
                     cb.onChange(async (value) => {
                         await plugin.gitManager.setConfig(
                             "user.email",
-                            value == "" ? undefined : value
+                            value === "" ? undefined : value
                         );
                     });
                 });
@@ -851,6 +851,24 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
                     );
             }
         }
+
+        if (plugin.gitManager instanceof SimpleGit)
+            new Setting(containerEl)
+                .setName("HTTP/HTTPS Proxy URL")
+                .setDesc(
+                    "Set a custom proxy for desktop native Git network operations, e.g. http://127.0.0.1:7890. Leave empty to disable."
+                )
+                .addText((cb) => {
+                    cb.setValue(plugin.settings.proxyUrl);
+                    cb.setPlaceholder("http://127.0.0.1:7890");
+                    cb.onChange(async (value) => {
+                        plugin.settings.proxyUrl = value.trim();
+                        await plugin.saveSettings();
+                        await (plugin.gitManager as SimpleGit)
+                            .setGitInstance()
+                            .catch((e) => plugin.displayError(e));
+                    });
+                });
 
         if (plugin.gitManager instanceof SimpleGit)
             new Setting(containerEl)

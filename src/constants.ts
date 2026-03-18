@@ -13,6 +13,7 @@ export const DEFAULT_SETTINGS: ObsidianGitSettings = {
     autoCommitMessage: "vault backup: {{date}}",
     commitMessageScript: "",
     commitDateFormat: DATE_TIME_FORMAT_SECONDS,
+    proxyUrl: "",
     autoSaveInterval: 0,
     autoPushInterval: 0,
     autoPullInterval: 0,

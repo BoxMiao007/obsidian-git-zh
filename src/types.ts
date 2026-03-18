@@ -5,6 +5,7 @@ export interface ObsidianGitSettings {
     autoCommitMessage: string;
     commitMessageScript: string;
     commitDateFormat: string;
+    proxyUrl: string;
     /**
      * Interval to either automatically commit-and-sync or just commit
      */

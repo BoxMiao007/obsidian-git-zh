@@ -75,6 +75,7 @@ export class SimpleGit extends GitManager {
             const pathPaths = this.plugin.localStorage.getPATHPaths();
             const envVars = this.plugin.localStorage.getEnvVars();
             const gitDir = this.plugin.settings.gitDir;
+            const proxyUrl = this.plugin.settings.proxyUrl.trim();
             const envs = { ...process.env };
             if (pathPaths.length > 0) {
                 const path = pathPaths.join(":") + ":" + envs["PATH"];
@@ -82,6 +83,12 @@ export class SimpleGit extends GitManager {
             }
             if (gitDir) {
                 envs["GIT_DIR"] = gitDir;
+            }
+            if (proxyUrl) {
+                envs["HTTP_PROXY"] = proxyUrl;
+                envs["HTTPS_PROXY"] = proxyUrl;
+                envs["http_proxy"] = proxyUrl;
+                envs["https_proxy"] = proxyUrl;
             }
             for (const envVar of envVars) {
                 const [key, value] = envVar.split("=");
@@ -122,7 +129,7 @@ export class SimpleGit extends GitManager {
                 ASK_PASS_SCRIPT_FILE
             );
 
-            if (envs["SSH_ASKPASS"] == undefined) {
+            if (envs["SSH_ASKPASS"] === undefined) {
                 envs["SSH_ASKPASS"] = askPassPath;
             }
 
@@ -136,7 +143,7 @@ export class SimpleGit extends GitManager {
                 absolutePluginConfigPath,
                 ASK_PASS_INPUT_FILE
             );
-            if (envs["SSH_ASKPASS"] == askPassPath) {
+            if (envs["SSH_ASKPASS"] === askPassPath) {
                 this.askpass().catch((e) => this.plugin.displayError(e));
             }
 
@@ -218,7 +225,7 @@ export class SimpleGit extends GitManager {
             });
 
             for await (const event of watcher) {
-                if (event.filename != ASK_PASS_INPUT_FILE) continue;
+                if (event.filename !== ASK_PASS_INPUT_FILE) continue;
                 const triggerFilePath =
                     relPluginConfigDir + ASK_PASS_INPUT_FILE;
 
@@ -330,7 +337,7 @@ export class SimpleGit extends GitManager {
         const dir = opts?.path;
         this.plugin.setPluginState({ gitAction: CurrentGitAction.status });
         const status = await this.git.status(
-            dir != undefined ? ["--", dir] : []
+            dir !== undefined ? ["--", dir] : []
         );
         this.plugin.setPluginState({ gitAction: CurrentGitAction.idle });
 
@@ -348,7 +355,7 @@ export class SimpleGit extends GitManager {
             all: allFilesFormatted,
             changed: allFilesFormatted.filter((e) => e.workingDir !== " "),
             staged: allFilesFormatted.filter(
-                (e) => e.index !== " " && e.index != "U"
+                (e) => e.index !== " " && e.index !== "U"
             ),
             conflicted: status.conflicted.map(
                 (path) => this.formatPath({ path }).path
@@ -397,9 +404,10 @@ export class SimpleGit extends GitManager {
                     const strippedSubmods: string[] = submods
                         .map((i) => {
                             const submod = i.match(/'([^']*)'/);
-                            if (submod != undefined) {
+                            if (submod !== null) {
                                 return root + "/" + submod[1] + sep;
                             }
+                            return undefined;
                         })
                         .filter((i): i is string => !!i);
 
@@ -423,7 +431,7 @@ export class SimpleGit extends GitManager {
         from?: string;
     } {
         function format(path?: string): string | undefined {
-            if (path == undefined) return undefined;
+            if (path === undefined) return undefined;
 
             if (path.startsWith('"') && path.endsWith('"')) {
                 return path.substring(1, path.length - 1);
@@ -431,7 +439,7 @@ export class SimpleGit extends GitManager {
                 return path;
             }
         }
-        if (path.from != undefined) {
+        if (path.from !== undefined) {
             return {
                 from: format(path.from),
                 path: format(path.path)!,
@@ -552,7 +560,7 @@ export class SimpleGit extends GitManager {
 
     async unstageAll({ dir }: { dir?: string }): Promise<void> {
         this.plugin.setPluginState({ gitAction: CurrentGitAction.add });
-        await this.git.reset(dir != undefined ? ["--", dir] : []);
+        await this.git.reset(dir !== undefined ? ["--", dir] : []);
         this.plugin.setPluginState({ gitAction: CurrentGitAction.idle });
     }
 
@@ -588,7 +596,7 @@ export class SimpleGit extends GitManager {
         const dir = opts?.path;
         this.plugin.setPluginState({ gitAction: CurrentGitAction.status });
         const args = [];
-        if (dir != undefined) {
+        if (dir !== undefined) {
             args.push("--", dir);
         }
         const untrackedFiles = await this.git.clean(
@@ -879,7 +887,7 @@ export class SimpleGit extends GitManager {
                             vaultPath: this.getRelativeVaultPath(f.file),
                             fromPath: f.from,
                             fromVaultPath:
-                                f.from != undefined
+                                f.from !== undefined
                                     ? this.getRelativeVaultPath(f.from)
                                     : undefined,
                             binary: f.binary,
@@ -952,7 +960,7 @@ export class SimpleGit extends GitManager {
     }
 
     async setConfig(path: string, value: string | undefined): Promise<void> {
-        if (value == undefined) {
+        if (value === undefined) {
             await this.git.raw(["config", "--local", "--unset", path]);
         } else {
             await this.git.addConfig(path, value);
@@ -965,13 +973,13 @@ export class SimpleGit extends GitManager {
     ): Promise<string | undefined> {
         const res = await this.git.getConfig(
             path.toLowerCase(),
-            scope == "all" ? undefined : scope
+            scope === "all" ? undefined : scope
         );
         return res.value ?? undefined;
     }
 
     async fetch(remote?: string): Promise<void> {
-        await this.git.fetch(remote != undefined ? [remote] : []);
+        await this.git.fetch(remote !== undefined ? [remote] : []);
     }
 
     async setRemote(name: string, url: string): Promise<void> {
