@@ -151,7 +151,7 @@ export class StatusBar {
                 offlineMode ? "Offline: " : ""
             }Last Commit: ${fromNow}`;
 
-            if (this.unPushedCommits ?? 0 > 0) {
+            if ((this.unPushedCommits ?? 0) > 0) {
                 this.statusBarEl.ariaLabel += `\n(${this.unPushedCommits} unpushed commits)`;
             }
         } else {
