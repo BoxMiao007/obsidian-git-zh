@@ -787,7 +787,7 @@ export class SimpleGit extends GitManager {
         if (trackingBranch == null || currentBranch == null) {
             return 0;
         }
-        const [remote, _] = splitRemoteBranch(trackingBranch);
+        const [remote] = splitRemoteBranch(trackingBranch);
         const remoteBranches = await this.getRemoteBranches(remote);
         if (!remoteBranches.includes(trackingBranch)) {
             this.plugin.log(
