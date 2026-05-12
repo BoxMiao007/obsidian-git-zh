@@ -131,14 +131,14 @@ function createTooltip(
         .parseFromString(patchHtml, "text/html")
         .querySelector(".d2h-file-diff");
 
-    const contentEl = document.createDiv();
+    const contentEl = activeDocument.createDiv();
 
     // toolbar
-    const toolbar = document.createDiv();
+    const toolbar = activeDocument.createDiv();
     toolbar.addClass("tooltip-toolbar");
 
     const makeButton = (icon: string, label: string) => {
-        const btn = document.createDiv();
+        const btn = activeDocument.createDiv();
         setIcon(btn, icon);
         btn.setAttr("aria-label", label);
         btn.addClass("clickable-icon");

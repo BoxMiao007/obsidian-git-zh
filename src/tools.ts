@@ -159,7 +159,7 @@ export default class Tools {
                 const res = await gitManager.rawCommand(command);
                 if (res) {
                     notice.setMessage(res);
-                    window.setTimeout(() => notice.hide(), 5000);
+                    activeWindow.setTimeout(() => notice.hide(), 5000);
                 } else {
                     notice.hide();
                 }

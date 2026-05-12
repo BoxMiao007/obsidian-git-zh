@@ -150,7 +150,7 @@ export class IsomorphicGit extends GitManager {
 
     async status(opts?: { path?: string }): Promise<Status> {
         let notice: Notice | undefined;
-        const timeout = window.setTimeout(() => {
+        const timeout = activeWindow.setTimeout(() => {
             notice = new Notice(
                 "This takes longer: Getting status",
                 this.noticeLength
@@ -1019,7 +1019,7 @@ export class IsomorphicGit extends GitManager {
 
     async getUnstagedFiles(base = "."): Promise<UnstagedFile[]> {
         let notice: Notice | undefined;
-        const timeout = window.setTimeout(() => {
+        const timeout = activeWindow.setTimeout(() => {
             notice = new Notice(
                 "This takes longer: Getting status",
                 this.noticeLength
