@@ -16,6 +16,7 @@
     "keywords": [],
     "author": "Vinzent03",
     "license": "MIT",
+    "type": "module",
     "standard-version": {
         "t": ""
     },
