@@ -1126,9 +1126,7 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
             const trackMovement = new Setting(this.containerEl)
                 .setName("Follow movement and copies across files and commits")
                 .addDropdown((dropdown) => {
-                    dropdown.addOptions(<
-                        Record<LineAuthorFollowMovement, string>
-                    >{
+                    dropdown.addOptions({
                         inactive: "Do not follow (default)",
                         "same-commit": "Follow within same commit",
                         "all-commits": "Follow within all commits (maybe slow)",
