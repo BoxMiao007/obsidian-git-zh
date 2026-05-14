@@ -182,29 +182,19 @@ const TRANSLATIONS = {
         '"是否以及如何显示行作者的创作日期和时间"',
 
     // ========== 下拉选项 ==========
-    '"Merge"': '"合并"',
-    '"Rebase"': '"变基"',
+    // 注意：单词级翻译已移至 TEMPLATE_TRANSLATIONS 用更安全的上下文匹配
     '"Other sync service (Only updates the HEAD without touching the working directory)"':
         '"其他同步服务（仅更新 HEAD，不触及工作目录）"',
     '"None (git default)"': '"无（git 默认）"',
     '"Our changes"': '"我们的更改"',
     '"Their changes"': '"他们的更改"',
-    '"Colored"': '"彩色"',
-    '"Monochrome"': '"单色"',
-    '"Initials"': '"首字母"',
     '"Initials (default)"': '"首字母（默认）"',
-    '"Hide"': '"隐藏"',
-    '"Full"': '"完整"',
     '"Full name"': '"全名"',
     '"First name"': '"名字"',
     '"Last name"': '"姓氏"',
-    '"Split"': '"分屏"',
-    '"Unified"': '"统一"',
-    '"Disabled"': '"禁用"',
     '"Date (default)"': '"日期（默认）"',
     '"Date and time"': '"日期和时间"',
     '"Natural language"': '"自然语言"',
-    '"Custom"': '"自定义"',
     '"My local (default)"': '"我的本地（默认）"',
     '"Author\'s local"': '"作者本地"',
     '"UTC+0000/Z"': '"UTC+0000/Z"',
@@ -214,9 +204,7 @@ const TRANSLATIONS = {
         '"在所有提交内跟踪（可能较慢）"',
 
     // ========== 按钮文本 ==========
-    '"Preview"': '"预览"',
-    '"Reload"': '"重新加载"',
-    '"Save"': '"保存"',
+    // 短字符串已移除，避免误替换代码逻辑
 
     // ========== 通知消息 ==========
     '"No repository found"': '"未找到仓库"',
@@ -245,20 +233,11 @@ const TRANSLATIONS = {
 
     // ========== 源代码管理视图 ==========
     '"Staged Changes"': '"已暂存的更改"',
-    '"Changes"': '"更改"',
     '"Recently Pulled Files"': '"最近拉取的文件"',
     '"Commit Message"': '"提交信息"',
     '"Stage all"': '"全部暂存"',
     '"Unstage all"': '"全部取消暂存"',
     '"Change Layout"': '"更改布局"',
-    '"Commit"': '"提交"',
-    '"Stage"': '"暂存"',
-    '"Unstage"': '"取消暂存"',
-    '"Discard"': '"放弃"',
-    '"Push"': '"推送"',
-    '"Pull"': '"拉取"',
-    '"Refresh"': '"刷新"',
-    '"Clear"': '"清除"',
 
     // ========== 命令名称 ==========
     '"Edit .gitignore"': '"编辑 .gitignore"',
@@ -267,8 +246,6 @@ const TRANSLATIONS = {
     '"Open diff view"': '"打开差异视图"',
     '"Open file on GitHub"': '"在 GitHub 上打开文件"',
     '"Open file history on GitHub"': '"在 GitHub 上打开文件历史"',
-    '"Pull"': '"拉取"',
-    '"Fetch"': '"获取"',
     '"Switch to remote branch"': '"切换到远程分支"',
     '"Add file to .gitignore"': '"添加文件到 .gitignore"',
     '"Commit-and-sync"': '"提交并同步"',
@@ -276,12 +253,10 @@ const TRANSLATIONS = {
     '"Commit-and-sync with specific message"': '"使用特定信息提交并同步"',
     '"Commit all changes"': '"提交所有更改"',
     '"Commit all changes with specific message"': '"使用特定信息提交所有更改"',
-    '"Commit"': '"提交"',
     '"Commit staged"': '"提交已暂存"',
     '"Commit staged with specific message"': '"使用特定信息提交已暂存"',
     '"Commit with specific message"': '"使用特定信息提交"',
     '"Amend staged"': '"修正已暂存"',
-    '"Push"': '"推送"',
     '"Stage current file"': '"暂存当前文件"',
     '"Unstage current file"': '"取消暂存当前文件"',
     '"Edit remotes"': '"编辑远程仓库"',
@@ -346,8 +321,6 @@ const TRANSLATIONS = {
     '"Failed on initialization!"': '"初始化失败！"',
 
     // ========== 对话框和提示 ==========
-    '"Cancel"': '"取消"',
-    '"Delete"': '"删除"',
     '"DELETE ALL YOUR LOCAL CONFIG AND PLUGINS"': '"删除所有本地配置和插件"',
     '"Enter remote URL"': '"输入远程 URL"',
     '"Select branch to checkout"': '"选择要检出的分支"',
@@ -397,7 +370,6 @@ const TRANSLATIONS = {
         '"指定克隆深度。留空则进行完整克隆。"',
     '"Untracked"': '"未跟踪"',
     '"Working Dir"': '"工作目录"',
-    '"Index"': '"索引"',
 
     // ========== 视图和标题 ==========
     '"Source Control"': '"源代码管理"',
@@ -413,10 +385,8 @@ const TRANSLATIONS = {
     '"Open File"': '"打开文件"',
 
     // ========== 文件状态 ==========
-    '"And "': '"还有 "',
-    '" more files"': '" 个文件"',
-    '"file"': '"文件"',
-    '"files"': '"文件"',
+    // 注意："file" 和 "files" 不能放在这里做全局替换，因为它们在 isomorphic-git
+    // 内部被用作类型标识符（type:"file"）。具体的 UI 上下文翻译在 TEMPLATE_TRANSLATIONS 中处理。
     '"untracked file"': '"未跟踪文件"',
     '"tracked file"': '"已跟踪文件"',
 
@@ -435,7 +405,7 @@ const TRANSLATIONS = {
     '"Update Working Dir"': '"更新工作目录"',
     '"Commit must be a string"': '"提交必须是字符串"',
     '"Config value is not a string"': '"配置值不是字符串"',
-    '"Escape"': '"退出"',
+    // 注意："Escape" 是键盘按键名称，不能翻译，否则会破坏快捷键处理
     '"Cannot run git command. Trying to run: "':
         '"无法运行 Git 命令。尝试运行："',
     '"Git: Error in trackChanged."': '"Git：跟踪更改时出错。"',
@@ -529,6 +499,16 @@ const TEMPLATE_TRANSLATIONS = [
     {
         search: /"tracked file"/g,
         replace: '"已跟踪文件"',
+    },
+    // ========== file/files 安全上下文替换 ==========
+    // 只替换 UI 可见的 pluralization 模式，不影响 isomorphic-git 的 type:"file"
+    {
+        search: /==1\?"file":"files"/g,
+        replace: '==1?"个文件":"个文件"',
+    },
+    {
+        search: /== 1 \? "file" : "files"/g,
+        replace: '== 1 ? "个文件" : "个文件"',
     },
     // ========== 动态模板字符串翻译 ==========
     {
@@ -626,15 +606,16 @@ const TEMPLATE_TRANSLATIONS = [
     },
     {
         // Most of the time you want to push after committing
+        // 注意：不能在 replace 中引用 minified 变量名，它们每次构建都会变化
         search: /Most of the time you want to push after committing\. Turning this off turns a commit-and-sync action into commit \$\{[^}]+\}only\. It will still be called commit-and-sync\./g,
         replace:
-            '大多数情况下，您希望在提交后推送。关闭此项将使提交并同步操作变为仅提交${i.settings.pullBeforePush?"和拉取 ":""}。它仍将被称为提交并同步。',
+            '大多数情况下，您希望在提交后推送。关闭此项将使提交并同步操作变为仅提交。它仍将被称为提交并同步。',
     },
     {
         // On commit-and-sync, pull commits as well
         search: /On commit-and-sync, pull commits as well\. Turning this off turns a commit-and-sync action into commit \$\{[^}]+\}only\./g,
         replace:
-            '在提交并同步时，同时拉取提交。关闭此项将使提交并同步操作变为仅提交${i.settings.disablePush?"":"和推送 "}。',
+            '在提交并同步时，同时拉取提交。关闭此项将使提交并同步操作变为仅提交。',
     },
     // ========== 从123.txt提取的更多模板字符串 ==========
     {
@@ -667,7 +648,7 @@ const TEMPLATE_TRANSLATIONS = [
         // If turned on, do auto ${n} every X minutes after stopping file edits
         search: /If turned on, do auto \$\{n\} every \$\{[^}]+\} after stopping file edits\./g,
         replace:
-            "如果启用，将在停止编辑文件后每隔${iR(i.settings.autoSaveInterval)}自动${n}。",
+            "如果启用，将在停止编辑文件后自动${n}。",
     },
     {
         // This also prevents auto ${n} while editing a file

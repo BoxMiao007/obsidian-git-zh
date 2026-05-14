@@ -68,6 +68,7 @@ const context = await esbuild.context({
 
 if (prod) {
     await context.rebuild();
+    await context.dispose();
     // 应用中文翻译
     applyTranslations();
     process.exit(0);
