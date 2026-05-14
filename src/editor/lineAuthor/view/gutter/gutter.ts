@@ -25,8 +25,8 @@ import {
     impossibleBranch,
     prefixOfLengthAsWhitespace,
     resizeToLength,
-    strictDeepEqual,
 } from "src/utils";
+import { isDeepStrictEqual } from "node:util";
 
 const VALUE_NOT_FOUND_FALLBACK = "-";
 
@@ -51,7 +51,7 @@ export class TextGutter extends GutterMarker {
     }
 
     toDOM() {
-        return document.createTextNode(this.text);
+        return activeDocument.createTextNode(this.text);
     }
 
     destroy(dom: HTMLElement): void {
@@ -122,7 +122,7 @@ export class LineAuthoringGutter extends GutterMarker {
         }
 
         // this is called frequently, when the gutter moves outside of the view.
-        if (!document.body.contains(dom)) {
+        if (!activeDocument.body.contains(dom)) {
             attachedGutterElements.delete(dom);
         }
     }
@@ -264,7 +264,9 @@ export class LineAuthoringGutter extends GutterMarker {
         }
 
         // add trailing * if author and comitter are different.
-        if (!strictDeepEqual(nonZeroCommit?.author, nonZeroCommit?.committer)) {
+        if (
+            !isDeepStrictEqual(nonZeroCommit?.author, nonZeroCommit?.committer)
+        ) {
             rendered = rendered + DIFFERING_AUTHOR_COMMITTER_MARKER;
         }
 
@@ -394,7 +396,7 @@ export class LineAuthoringGutter extends GutterMarker {
  *
  * This function should be used instead of directly calling the constructor,
  * as we don't want to re-create the same instance multiple times, whenever the user
- * scrolls through a document. It simply stores the instances in the cache {@link gutterInstances}.
+ * scrolls through a activeDocument. It simply stores the instances in the cache {@link gutterInstances}.
  */
 export function lineAuthoringGutterMarker(
     la: Exclude<LineAuthoring, "untracked">,

@@ -18,7 +18,7 @@ class GitGutterMarker extends GutterMarker {
     }
 
     toDOM(_: EditorView) {
-        const marker = document.createElement("div");
+        const marker = activeDocument.createElement("div");
         marker.className = `git-gutter-marker git-${this.type} ${
             this.staged ? "staged" : "unstaged"
         }`;

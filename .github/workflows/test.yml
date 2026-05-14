@@ -6,10 +6,10 @@ jobs:
     svelte-check:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v4
-            - uses: pnpm/action-setup@v2
+            - uses: actions/checkout@v6
+            - uses: pnpm/action-setup@v6
               with:
-                  version: latest
+                  version: 10
             - name: Install modules
               run: pnpm install
             - name: Run Svelte-Check
@@ -17,10 +17,10 @@ jobs:
     lint:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v4
-            - uses: pnpm/action-setup@v2
+            - uses: actions/checkout@v6
+            - uses: pnpm/action-setup@v6
               with:
-                  version: latest
+                  version: 10
             - name: Install modules
               run: pnpm install
             - name: Run ESLint
@@ -28,10 +28,10 @@ jobs:
     format:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v4
-            - uses: pnpm/action-setup@v2
+            - uses: actions/checkout@v6
+            - uses: pnpm/action-setup@v6
               with:
-                  version: latest
+                  version: 10
             - name: Install modules
               run: pnpm install
             - name: Run Prettier
@@ -39,21 +39,21 @@ jobs:
     compile:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v4
-            - uses: pnpm/action-setup@v2
+            - uses: actions/checkout@v6
+            - uses: pnpm/action-setup@v6
               with:
-                  version: latest
+                  version: 10
             - name: Install modules
               run: pnpm install
             - name: Run tsc
-              run: tsc --noEmit
+              run: pnpm run tsc --noEmit
     build:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v4
-            - uses: pnpm/action-setup@v2
+            - uses: actions/checkout@v6
+            - uses: pnpm/action-setup@v6
               with:
-                  version: latest
+                  version: 10
             - name: Install modules
               run: pnpm install
             - name: Run build

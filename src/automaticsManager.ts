@@ -135,7 +135,7 @@ export default class AutomaticsManager {
         } else {
             // max timeout in js
             if (time > 2147483647) time = 2147483647;
-            this.timeoutIDCommitAndSync = window.setTimeout(
+            this.timeoutIDCommitAndSync = activeWindow.setTimeout(
                 () => this.doAutoCommitAndSync(),
                 time
             );
@@ -191,7 +191,10 @@ export default class AutomaticsManager {
         // max timeout in js
         if (time > 2147483647) time = 2147483647;
 
-        this.timeoutIDPull = window.setTimeout(() => this.doAutoPull(), time);
+        this.timeoutIDPull = activeWindow.setTimeout(
+            () => this.doAutoPull(),
+            time
+        );
     }
 
     private doAutoPull(): void {
@@ -209,7 +212,10 @@ export default class AutomaticsManager {
         // max timeout in js
         if (time > 2147483647) time = 2147483647;
 
-        this.timeoutIDPush = window.setTimeout(() => this.doAutoPush(), time);
+        this.timeoutIDPush = activeWindow.setTimeout(
+            () => this.doAutoPush(),
+            time
+        );
     }
 
     private doAutoPush(): void {

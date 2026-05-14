@@ -45,7 +45,7 @@
                 appendLogs().catch(console.error);
             }
         });
-        const sentinel = document.querySelector("#sentinel");
+        const sentinel = activeDocument.querySelector("#sentinel");
         if (sentinel) {
             observer.observe(sentinel);
         }

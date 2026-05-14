@@ -82,7 +82,7 @@ function isDarkMode() {
  * value in the line author settings. This is necessary for proper text coloring.
  */
 export function setTextColorCssBasedOnSetting(settings: LineAuthorSettings) {
-    document.body.style.setProperty(
+    activeDocument.body.style.setProperty(
         "--obs-git-gutter-text",
         settings.textColorCss
     );

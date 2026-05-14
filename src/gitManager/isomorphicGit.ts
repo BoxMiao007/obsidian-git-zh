@@ -150,7 +150,7 @@ export class IsomorphicGit extends GitManager {
 
     async status(opts?: { path?: string }): Promise<Status> {
         let notice: Notice | undefined;
-        const timeout = window.setTimeout(() => {
+        const timeout = activeWindow.setTimeout(() => {
             notice = new Notice(
                 "This takes longer: Getting status",
                 this.noticeLength
@@ -518,8 +518,9 @@ export class IsomorphicGit extends GitManager {
                         ref: branchInfo.current,
                         onProgress: (progress) => {
                             if (progressNotice !== undefined) {
-                                progressNotice.noticeEl.innerText =
-                                    this.getProgressText("Checkout", progress);
+                                progressNotice.setMessage(
+                                    this.getProgressText("Checkout", progress)
+                                );
                             }
                         },
                         remote: branchInfo.remote,
@@ -580,8 +581,9 @@ export class IsomorphicGit extends GitManager {
                     remote,
                     onProgress: (progress) => {
                         if (progressNotice !== undefined) {
-                            progressNotice.noticeEl.innerText =
-                                this.getProgressText("Pushing", progress);
+                            progressNotice.setMessage(
+                                this.getProgressText("Pushing", progress)
+                            );
                         }
                     },
                 })
@@ -733,8 +735,9 @@ export class IsomorphicGit extends GitManager {
                     depth: depth,
                     onProgress: (progress) => {
                         if (progressNotice !== undefined) {
-                            progressNotice.noticeEl.innerText =
-                                this.getProgressText("Cloning", progress);
+                            progressNotice.setMessage(
+                                this.getProgressText("Cloning", progress)
+                            );
                         }
                     },
                 })
@@ -787,8 +790,9 @@ export class IsomorphicGit extends GitManager {
                 ...this.getRepo(),
                 onProgress: (progress: GitProgressEvent) => {
                     if (progressNotice !== undefined) {
-                        progressNotice.noticeEl.innerText =
-                            this.getProgressText("Fetching", progress);
+                        progressNotice.setMessage(
+                            this.getProgressText("Fetching", progress)
+                        );
                     }
                 },
                 remote: remote ?? (await this.getCurrentRemote()),
@@ -1015,7 +1019,7 @@ export class IsomorphicGit extends GitManager {
 
     async getUnstagedFiles(base = "."): Promise<UnstagedFile[]> {
         let notice: Notice | undefined;
-        const timeout = window.setTimeout(() => {
+        const timeout = activeWindow.setTimeout(() => {
             notice = new Notice(
                 "This takes longer: Getting status",
                 this.noticeLength
@@ -1274,8 +1278,8 @@ export class IsomorphicGit extends GitManager {
 // Convert a value to an Async Iterator
 // This will be easier with async generator functions.
 
-/*eslint-disable */
-function fromValue(value: any) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function fromValue(value: unknown) {
     let queue = [value];
     return {
         next() {
@@ -1289,11 +1293,13 @@ function fromValue(value: any) {
             return {};
         },
         [Symbol.asyncIterator]() {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
             return this;
         },
     };
 }
 
+// eslint-disable-next-line @typescript-eslint/require-await
 async function* arrayBufferToAsyncIterator(
     buffer: ArrayBuffer
 ): AsyncIterableIterator<Uint8Array> {

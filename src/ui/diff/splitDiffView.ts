@@ -161,7 +161,7 @@ export default class SplitDiffView extends ItemView {
     }
 
     getState(): Record<string, unknown> {
-        return this.state as unknown as Record<string, unknown>;
+        return this.state;
     }
 
     onClose(): Promise<void> {
@@ -276,7 +276,7 @@ export default class SplitDiffView extends ItemView {
     }
 
     renderButtons(): HTMLElement {
-        const contentEl = document.createElement("div");
+        const contentEl = activeDocument.createDiv();
 
         const stageButton = contentEl.createDiv();
         stageButton.addClass("clickable-icon");

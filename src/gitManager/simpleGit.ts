@@ -70,6 +70,17 @@ export class SimpleGit extends GitManager {
                 config: ["core.quotepath=off"],
                 unsafe: {
                     allowUnsafeCustomBinary: true,
+                    allowUnsafeEditor: true,
+                    allowUnsafeAskPass: true,
+                    allowUnsafeConfigEnvCount: true,
+                    allowUnsafeConfigPaths: true,
+                    allowUnsafeCredentialHelper: true,
+                    allowUnsafeGitProxy: true,
+                    allowUnsafeGpgProgram: true,
+                    allowUnsafeHooksPath: true,
+                    allowUnsafeMergeDriver: true,
+                    allowUnsafeSshCommand: true,
+                    allowUnsafePager: true,
                 },
             });
             const pathPaths = this.plugin.localStorage.getPATHPaths();
@@ -83,6 +94,7 @@ export class SimpleGit extends GitManager {
             }
             if (gitDir) {
                 envs["GIT_DIR"] = gitDir;
+                envs["GIT_WORK_TREE"] = basePath;
             }
             if (proxyUrl) {
                 envs["HTTP_PROXY"] = proxyUrl;
@@ -108,7 +120,7 @@ export class SimpleGit extends GitManager {
                 debug.enable(namespaces.join(NAMESPACE_SEPARATOR));
             }
 
-            if (await this.git.checkIsRepo()) {
+            if (await this.git.env(envs).checkIsRepo()) {
                 // Resolve the relative root reported by git into an absolute path
                 // in case git resides in a different filesystem (eg, WSL)
                 const relativeRoot = await this.git.revparse("--show-cdup");
@@ -230,7 +242,7 @@ export class SimpleGit extends GitManager {
                     relPluginConfigDir + ASK_PASS_INPUT_FILE;
 
                 // Wait a bit to ensure the file is fully removed
-                await new Promise((res) => setTimeout(res, 200));
+                await new Promise((res) => activeWindow.setTimeout(res, 200));
                 if (!(await adapter.exists(triggerFilePath))) continue;
 
                 const data = await adapter.read(triggerFilePath);
@@ -239,9 +251,18 @@ export class SimpleGit extends GitManager {
                 if (data.length > 60) {
                     notice = new Notice(data, 999_999);
                 }
+                let obscure = true;
+
+                // This does only work for English output.
+                // There is no general way detect the type of input asked for.
+                // We could enfore english output, but that is not beneficial
+                // for the user either.
+                if (data.contains("Username for")) {
+                    obscure = false;
+                }
                 const response = await new GeneralModal(this.plugin, {
                     allowEmpty: true,
-                    obscure: true,
+                    obscure,
                     placeholder:
                         data.length > 60
                             ? "Enter a response to the message."
@@ -270,7 +291,7 @@ export class SimpleGit extends GitManager {
                 ),
                 { force: true }
             );
-            await new Promise((res) => setTimeout(res, 5000));
+            await new Promise((res) => activeWindow.setTimeout(res, 5000));
             this.plugin.log("Retry watch for ask pass");
             await this.askpass();
         }
@@ -774,7 +795,7 @@ export class SimpleGit extends GitManager {
         if (trackingBranch == null || currentBranch == null) {
             return 0;
         }
-        const [remote, _] = splitRemoteBranch(trackingBranch);
+        const [remote] = splitRemoteBranch(trackingBranch);
         const remoteBranches = await this.getRemoteBranches(remote);
         if (!remoteBranches.includes(trackingBranch)) {
             this.plugin.log(
@@ -908,11 +929,87 @@ export class SimpleGit extends GitManager {
         return this.git.show([commitHash + ":" + path]);
     }
 
+    private async getLocalBranchUpstream(
+        localBranchName: string
+    ): Promise<string | undefined> {
+        // Returns the configured upstream ref for a local branch (e.g. `origin/main`), using
+        // Return undefined when no upstream exists or if git throws an error.
+        try {
+            const upstream = await this.git.raw([
+                "rev-parse",
+                "--abbrev-ref",
+                `${localBranchName}@{upstream}`,
+            ]);
+            const trimmed = upstream.trim();
+            return trimmed.length > 0 ? trimmed : undefined;
+        } catch {
+            return undefined;
+        }
+    }
+
+    private getAvailableLocalBranchName(
+        remoteBranchName: string,
+        remote: string,
+        existingBranchNames: string[]
+    ): string {
+        // Chooses a local branch name that does not collide with `existingBranchNames`.
+        // Prefers `remoteBranchName`, then `<remoteBranchName>-<remote>`, then that base with `-1`, `-2`, …
+        //
+        // Ex.: for a remote branch `origin/my-branch`
+        // - `my-branch` is preferred
+        // - `my-branch-origin` is next
+        // - `my-branch-origin-1` is next
+        // - `my-branch-origin-2` is next
+        // - etc.
+
+        const preferred = remoteBranchName;
+        if (!existingBranchNames.includes(preferred)) {
+            return preferred;
+        }
+        const base = `${remoteBranchName}-${remote}`;
+        let candidate = base;
+        let n = 0;
+        while (existingBranchNames.includes(candidate)) {
+            n += 1;
+            candidate = `${base}-${n}`;
+        }
+        return candidate;
+    }
+
     async checkout(branch: string, remote?: string): Promise<void> {
         if (remote) {
-            branch = `${remote}/${branch}`;
+            // If we're trying to checkout a remote branch we'll either switch to an existing local branch that
+            // already tracks it, or create a new local branch from the remote tip (name may be disambiguated).
+            const remoteBranch = `${remote}/${branch}`;
+            const branchInfo = await this.branchInfo();
+            const localBranchExists = branchInfo.branches.includes(branch);
+
+            // We found a local branch with the "correct" name, but it might track
+            // a different remote, so we'll double check before proceeding.
+            const existingBranchTracksRemote =
+                localBranchExists &&
+                (await this.getLocalBranchUpstream(branch)) === remoteBranch;
+
+            if (existingBranchTracksRemote) {
+                // The local branch already exists AND it tracked the correct remote, so we can simply switch to it.
+                await this.git.checkout(branch);
+            } else {
+                // The local branch doesn't exist or it tracks a different remote, so we'll need to create a new local branch.
+                // First we need to find a suitable name for the new local branch.
+                const localBranchName = this.getAvailableLocalBranchName(
+                    branch,
+                    remote,
+                    branchInfo.branches
+                );
+
+                // Finally, we can use `git checkout -b` to create the new local branch and set it to track the remote branch.
+                await this.git.checkout(["-b", localBranchName, remoteBranch]);
+            }
+        } else {
+            // Checkout an existing local branch (no remote specified).
+            await this.git.checkout(branch);
         }
-        await this.git.checkout(branch);
+
         if (this.plugin.settings.submoduleRecurseCheckout) {
             const submodulePaths = await this.getSubmodulePaths();
             for (const submodulePath of submodulePaths) {

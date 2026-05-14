@@ -33,7 +33,9 @@ export class BranchModal extends FuzzySuggestModal<string> {
 
     onClose() {
         //onClose gets called before onChooseItem
-        void new Promise((resolve) => setTimeout(resolve, 10)).then(() => {
+        void new Promise((resolve) =>
+            activeWindow.setTimeout(resolve, 10)
+        ).then(() => {
             if (this.resolve) this.resolve(undefined);
         });
     }
