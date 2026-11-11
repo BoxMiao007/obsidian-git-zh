@@ -88,7 +88,8 @@ export class SimpleGit extends GitManager {
                 envs["GIT_WORK_TREE"] = basePath;
             }
             // fork: 代理支持。将用户配置的代理注入环境变量，供原生 git 网络操作使用。
-            const proxyUrl = this.plugin.settings.proxyUrl.trim();
+            // 使用 ?? "" 兼容缺少该字段的旧设置/测试替身，避免读取 undefined 崩溃。
+            const proxyUrl = (this.plugin.settings.proxyUrl ?? "").trim();
             if (proxyUrl) {
                 envs["HTTP_PROXY"] = proxyUrl;
                 envs["HTTPS_PROXY"] = proxyUrl;
