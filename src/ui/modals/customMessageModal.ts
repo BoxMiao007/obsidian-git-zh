@@ -3,8 +3,8 @@ import type ObsidianGit from "src/main";
 
 export class CustomMessageModal extends SuggestModal<string> {
     resolve:
-        | ((value: string | PromiseLike<string> | undefined) => void)
-        | null = null;
+        ((value: string | PromiseLike<string> | undefined) => void) | null =
+        null;
     constructor(private readonly plugin: ObsidianGit) {
         super(plugin.app);
         this.setPlaceholder(
@@ -12,7 +12,7 @@ export class CustomMessageModal extends SuggestModal<string> {
         );
     }
 
-    openAndGetResult(): Promise<string> {
+    openAndGetResult(): Promise<string | undefined> {
         return new Promise((resolve) => {
             this.resolve = resolve;
             this.open();
@@ -21,11 +21,11 @@ export class CustomMessageModal extends SuggestModal<string> {
 
     onClose() {
         // onClose gets called before onChooseItem
-        void new Promise((resolve) =>
-            activeWindow.setTimeout(resolve, 10)
-        ).then(() => {
-            if (this.resolve) this.resolve(undefined);
-        });
+        void new Promise((resolve) => window.setTimeout(resolve, 10)).then(
+            () => {
+                if (this.resolve) this.resolve(undefined);
+            }
+        );
     }
 
     getSuggestions(query: string): string[] {

@@ -28,7 +28,7 @@ const generalModalConfigDefaults: GeneralModalConfig = {
 };
 
 export class GeneralModal extends SuggestModal<string> {
-    resolve: (
+    resolve!: (
         value: string | undefined | PromiseLike<string | undefined>
     ) => void;
     config: GeneralModalConfig;
@@ -45,9 +45,8 @@ export class GeneralModal extends SuggestModal<string> {
             promptContainer.addClass("git-obscure-prompt");
             promptContainer.setAttr("git-is-obscured", "true");
             const obscureSwitchButton = promptContainer?.createDiv({
-                cls: "search-input-clear-button",
+                cls: "search-input-clear-button git-show-password",
             });
-            obscureSwitchButton.style.marginRight = "32px";
             obscureSwitchButton.id = "git-show-password";
             obscureSwitchButton.addEventListener("click", () => {
                 const isObscured = promptContainer.getAttr("git-is-obscured");
@@ -74,11 +73,11 @@ export class GeneralModal extends SuggestModal<string> {
     }
 
     onClose() {
-        void new Promise((resolve) =>
-            activeWindow.setTimeout(resolve, 10)
-        ).then(() => {
-            if (this.resolve) this.resolve(undefined);
-        });
+        void new Promise((resolve) => window.setTimeout(resolve, 10)).then(
+            () => {
+                if (this.resolve) this.resolve(undefined);
+            }
+        );
     }
 
     getSuggestions(query: string): string[] {

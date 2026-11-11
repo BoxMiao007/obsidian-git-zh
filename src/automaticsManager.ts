@@ -120,22 +120,38 @@ export default class AutomaticsManager {
         }
     }
 
+    private get isAutomaticsDisabled(): boolean {
+        return (
+            !this.plugin.gitReady ||
+            this.plugin.localStorage.getPausedAutomatics()
+        );
+    }
+
     private startAutoCommitAndSync(minutes?: number) {
-        let time = (minutes ?? this.plugin.settings.autoSaveInterval) * 60000;
+        if (this.isAutomaticsDisabled) {
+            return;
+        }
         if (this.plugin.settings.autoBackupAfterFileChange) {
             if (minutes === 0) {
                 this.doAutoCommitAndSync();
             } else {
-                this.plugin.autoCommitDebouncer = debounce(
+                // Reuse the existing debouncer. Vault events during the run
+                // that just finished have already re-armed it; replacing it
+                // would either drop those events or, without cancel, leave the
+                // old one firing on its own schedule while the user keeps
+                // editing.
+                this.plugin.autoCommitDebouncer ??= debounce(
                     () => this.doAutoCommitAndSync(),
-                    time,
+                    this.plugin.settings.autoSaveInterval * 60000,
                     true
                 );
             }
         } else {
+            let time =
+                (minutes ?? this.plugin.settings.autoSaveInterval) * 60000;
             // max timeout in js
             if (time > 2147483647) time = 2147483647;
-            this.timeoutIDCommitAndSync = activeWindow.setTimeout(
+            this.timeoutIDCommitAndSync = window.setTimeout(
                 () => this.doAutoCommitAndSync(),
                 time
             );
@@ -165,13 +181,15 @@ export default class AutomaticsManager {
                         }
                     }
                 }
-                const onlyStaged = this.plugin.settings.autoCommitOnlyStaged;
                 if (this.plugin.settings.differentIntervalCommitAndPush) {
-                    await this.plugin.commit({ fromAuto: true, onlyStaged });
+                    await this.plugin.gitActions.commit({
+                        fromAuto: true,
+                        mode: "all",
+                    });
                 } else {
-                    await this.plugin.commitAndSync({
+                    await this.plugin.gitActions.commitAndSync({
                         fromAutoBackup: true,
-                        onlyStaged,
+                        mode: "all",
                     });
                 }
                 return true;
@@ -187,19 +205,19 @@ export default class AutomaticsManager {
     }
 
     private startAutoPull(minutes?: number) {
+        if (this.isAutomaticsDisabled) {
+            return;
+        }
         let time = (minutes ?? this.plugin.settings.autoPullInterval) * 60000;
         // max timeout in js
         if (time > 2147483647) time = 2147483647;
 
-        this.timeoutIDPull = activeWindow.setTimeout(
-            () => this.doAutoPull(),
-            time
-        );
+        this.timeoutIDPull = window.setTimeout(() => this.doAutoPull(), time);
     }
 
     private doAutoPull(): void {
         this.plugin.promiseQueue.addTask(
-            () => this.plugin.pullChangesFromRemote(),
+            () => this.plugin.gitActions.pullChangesFromRemote(),
             () => {
                 this.saveLastAuto(new Date(), "pull");
                 this.startAutoPull();
@@ -208,19 +226,19 @@ export default class AutomaticsManager {
     }
 
     private startAutoPush(minutes?: number) {
+        if (this.isAutomaticsDisabled) {
+            return;
+        }
         let time = (minutes ?? this.plugin.settings.autoPushInterval) * 60000;
         // max timeout in js
         if (time > 2147483647) time = 2147483647;
 
-        this.timeoutIDPush = activeWindow.setTimeout(
-            () => this.doAutoPush(),
-            time
-        );
+        this.timeoutIDPush = window.setTimeout(() => this.doAutoPush(), time);
     }
 
     private doAutoPush(): void {
         this.plugin.promiseQueue.addTask(
-            () => this.plugin.push(),
+            () => this.plugin.gitActions.push(),
             () => {
                 this.saveLastAuto(new Date(), "push");
                 this.startAutoPush();
@@ -267,6 +285,9 @@ export default class AutomaticsManager {
      * This is done by the difference between the setting and the time since the last auto action, but at least 0.
      */
     private diff(setting: number, lastAuto: Date) {
+        if (isNaN(lastAuto.getTime())) {
+            return setting;
+        }
         const now = new Date();
         const diff =
             setting -

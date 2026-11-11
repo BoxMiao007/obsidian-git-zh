@@ -2,3 +2,5 @@ allowBuilds:
   '@parcel/watcher': true
   esbuild: true
   svelte-preprocess: true
+patchedDependencies:
+  diff3@0.0.4: patches/diff3@0.0.4.patch

@@ -2,7 +2,7 @@ import { FuzzySuggestModal } from "obsidian";
 import type ObsidianGit from "src/main";
 
 export class BranchModal extends FuzzySuggestModal<string> {
-    resolve: (
+    resolve!: (
         value: string | undefined | PromiseLike<string | undefined>
     ) => void;
 
@@ -24,7 +24,7 @@ export class BranchModal extends FuzzySuggestModal<string> {
         this.resolve(item);
     }
 
-    openAndGetReslt(): Promise<string> {
+    openAndGetReslt(): Promise<string | undefined> {
         return new Promise((resolve) => {
             this.resolve = resolve;
             this.open();
@@ -33,10 +33,10 @@ export class BranchModal extends FuzzySuggestModal<string> {
 
     onClose() {
         //onClose gets called before onChooseItem
-        void new Promise((resolve) =>
-            activeWindow.setTimeout(resolve, 10)
-        ).then(() => {
-            if (this.resolve) this.resolve(undefined);
-        });
+        void new Promise((resolve) => window.setTimeout(resolve, 10)).then(
+            () => {
+                if (this.resolve) this.resolve(undefined);
+            }
+        );
     }
 }
