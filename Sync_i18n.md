@@ -2,7 +2,7 @@
 
 > **适用对象**: AI Agent（Claude Code, Cursor, Copilot 等）
 > **执行目标**: 安全同步上游仓库 `denolehov/obsidian-git`，保留本项目全部特色功能
-> **最后验证**: 2026-05-15（同步至上游 2.38.2，修复翻译脚本崩溃问题）
+> **最后验证**: 2026-11-11（同步至上游 2.43.0，适配声明式设置页重构）
 
 ---
 
@@ -470,3 +470,14 @@ AGENTS.md                         # AI Agent 配置
 ---
 
 _本手册基于 2026-05-15 实际同步操作和翻译崩溃修复经验编写，所有命令和策略均经过验证。_
+
+---
+
+## 附录 D：2.43.0（2026-11）同步要点
+
+- **设置页重构为声明式 API**：上游引入 `getSettingDefinitions()`（`SettingDefinitionItem[]`），设置项以 `{ name, desc, control }` 或 `this.toggle()/this.dropdown()` 参数形式声明，不再调用 `setName()/setDesc()`。因此旧的 `setName(...)` 模板匹配全部失效，需改为对声明式字符串/模板字面量匹配。
+- **动态插值的模板翻译**：`${automatic}` 在构建产物中被 minify 重命名（如 `${s}`）。模板条目必须用捕获组 `(\$\{[^}]+\})` 匹配，并在 `replace` 中用 `$1` 保留插值，**禁止硬编码 minified 变量名**。
+- **短字符串仍不可全局替换**：`Commit / Sync / Pull / Push / Fetch / Hide / Custom / Reload / Preview / Copy` 等只能通过上下文精确匹配（如 `name:"Editor",desc:"..."`、`heading:"Pull"`）翻译。
+- **代理字段容错**：`this.plugin.settings.proxyUrl` 需用 `(… ?? "").trim()` 读取，兼容缺少该字段的旧设置与测试替身。
+- **本次冲突文件**：`AGENTS.md`、`README.md`、`manifest.json`、`package.json`、`pnpm-lock.yaml`、`pnpm-workspace.yaml`、`src/gitManager/simpleGit.ts`、`src/setting/settings.ts`。
+- **验证**：`pnpm run tsc`、`pnpm run lint`、`node esbuild.config.mjs production`（含翻译计数）、`node -c main.js`，并确认 `HTTP_PROXY` 注入与设置页各分区正常。

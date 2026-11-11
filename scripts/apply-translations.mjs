@@ -487,6 +487,148 @@ const TRANSLATIONS = {
         '"删除之前添加的环境变量需要重新启动 Obsidian 才能生效。"',
     '"If you like this Plugin, consider donating to support continued development."':
         '"如果您喜欢这个插件，请考虑捐赠以支持持续开发。"',
+
+    // ========== 上游 2.43.0 新增/变更字符串（2026-11 同步） ==========
+    // 设置页：状态与页面描述
+    '"Git is not ready"': '"Git 尚未就绪"',
+    '"When the repository is ready, automatic routines, commit, sync, and editor settings become available. Check the repository paths and Git configuration under Advanced."':
+        '"当仓库就绪后，自动例程、提交、同步和编辑器设置将可用。请在「高级」中检查仓库路径和 Git 配置。"',
+    '"Scheduled commit, pull, and push routines."':
+        '"定时的提交、拉取和推送例程。"',
+    // 设置项描述
+    '"Push commits every X minutes. Set to 0 to disable."':
+        '"每 X 分钟推送提交。设置为 0 以禁用。"',
+    '"Pull changes every X minutes. Set to 0 to disable."':
+        '"每 X 分钟拉取更改。设置为 0 以禁用。"',
+    '"Exclude leaves matching files unstaged. Include stages only matching files; an empty include list commits staged files only. Configured globs override the vault limit for auto staging."':
+        '"排除模式下匹配的文件将不被暂存。包含模式下仅暂存匹配的文件；包含列表为空时仅提交已暂存的文件。已配置的 glob 会覆盖自动暂存时的库限制。"',
+    '"Placeholders: {{date}}, {{hostname}}, {{numFiles}}, and {{files}}. Leave empty to require manual input."':
+        '"占位符：{{date}}、{{hostname}}、{{numFiles}} 和 {{files}}。留空则每次提交时需要手动输入。"',
+    '"Placeholders: {{date}}, {{hostname}}, {{numFiles}}, and {{files}}."':
+        '"占位符：{{date}}、{{hostname}}、{{numFiles}} 和 {{files}}。"',
+    '"Run with \'sh -c\' to generate a commit message. Placeholders: {{hostname}}, {{date}}."':
+        '"使用 \'sh -c\' 运行以生成提交信息。占位符：{{hostname}}、{{date}}。"',
+    '"Set a hostname for this device. Defaults to the OS hostname on desktop."':
+        '"为此设备设置主机名。桌面端如未设置则默认使用操作系统主机名。"',
+    '"Push after committing. Disabling turns commit-and-sync into a local commit, with an optional pull."':
+        '"提交后推送。禁用后，提交并同步将变为本地提交，并可选择是否拉取。"',
+    '"Commit hash, author, date, and age coloring next to each line."':
+        '"在每行旁边显示提交哈希、作者、日期和按年龄着色。"',
+    '"Milliseconds to wait after a file change before refreshing. Minimum 500."':
+        '"文件更改后等待刷新前的毫秒数。最小 500。"',
+    '"Split diff computation time limit (ms)"':
+        '"分屏差异计算时间上限（毫秒）"',
+    '"Maximum milliseconds to compute a detailed split diff. Read-only diffs use ten times this value."':
+        '"计算详细分屏差异的最大毫秒数。只读差异使用此值的十倍。"',
+    // 身份与高级
+    '"Username on your Git server"': '"Git 服务器用户名"',
+    '"Git server password or access token"': '"Git 服务器密码或访问令牌"',
+    '"Select or create a secret stored on this device for this vault."':
+        '"选择或创建一个存储在此设备上、用于此库的密钥。"',
+    '"Repository author name"': '"仓库提交作者名称"',
+    '"Repository author email"': '"仓库提交作者邮箱"',
+    '"Repository paths, Git environment, and device options."':
+        '"仓库路径、Git 环境和设备选项。"',
+    '"Path to the Git executable for a custom installation."':
+        '"自定义安装的 Git 可执行文件路径。"',
+    '"One KEY=VALUE pair per line."': '"每行一个 KEY=VALUE 键值对。"',
+    '"One path per line."': '"每行一个路径。"',
+    '"Removing previous variables requires an Obsidian restart."':
+        '"删除先前的变量需要重启 Obsidian。"',
+    '"Repository folder within the vault"': '"库中的仓库文件夹"',
+    '"Choose the folder containing the Git repository. Leave empty when the repository is at the root."':
+        '"选择包含 Git 仓库的文件夹。当仓库位于根目录时留空。"',
+    '"Custom Git directory path (instead of .git)"':
+        '"自定义 Git 目录路径（替代 .git）"',
+    '"Resolved from the custom base path or vault root. Restart Obsidian to apply. Use backslashes on Windows."':
+        '"相对于自定义基础路径或库根目录解析。重启 Obsidian 以生效。在 Windows 上使用反斜杠。"',
+    '"This setting is not synced."': '"此设置不会同步。"',
+    '"Copy debug information"': '"复制调试信息"',
+    '"May contain sensitive settings."': '"可能包含敏感设置。"',
+    '"Debugging and logging"': '"调试和日志"',
+    '"Support continued development of the plugin."':
+        '"支持插件的持续开发。"',
+    // 通知消息（上游新增/变更）
+    '"Upstream branch will be created on first push. Skipping pull."':
+        '"首次推送时将创建上游分支。跳过拉取。"',
+    '"Use set upstream branch command to set it manually if desired."':
+        '"如需手动设置，请使用设置上游分支命令。"',
+    '"Cannot find a Git repository. Please create one via the given command, clone an existing repo or configure repo location."':
+        '"找不到 Git 仓库。请通过给定命令创建、克隆现有仓库或配置仓库位置。"',
+    '"Obsidian must be restarted for the change to take effect."':
+        '"必须重启 Obsidian 才能使更改生效。"',
+    // 设置项名称/描述（经 this.toggle / this.dropdown 声明）
+    '"Use separate commit and push intervals"': '"为提交和推送使用独立间隔"',
+    '"Enable to use one interval for commits and another for pushes."':
+        '"启用后，提交使用一个间隔，推送使用另一个间隔。"',
+    '"Stage all changes when nothing is staged"': '"无暂存内容时暂存所有更改"',
+    '"When using Commit with nothing staged, stage and commit all changes. Commit all changes and Commit-and-sync are unaffected."':
+        '"使用「提交」且无暂存内容时，暂存并提交所有更改。「提交所有更改」和「提交并同步」不受影响。"',
+    '"Pull commits as part of commit-and-sync."': '"在提交并同步时拉取提交。"',
+    '"Squash commits before push"': '"推送前压缩提交"',
+    '"Combine local unpushed commits into one before pushing. No force-push is needed."':
+        '"推送前将本地未推送的提交合并为一个。无需强制推送。"',
+    '"Show colored change markers in the editor and stage, reset, or preview hunks."':
+        '"在编辑器中显示彩色更改标记，并可暂存、重置或预览代码块。"',
+    '"Commands to stage and reset hunks and navigate between them."':
+        '"用于暂存和重置代码块以及在它们之间导航的命令。"',
+    '"Disable on slower machines if this causes lag."':
+        '"如果在较慢的机器上导致卡顿，请禁用此项。"',
+    '"Show date"': '"显示日期"',
+    '"Uses the {{date}} placeholder format."': '"使用 {{date}} 占位符格式。"',
+    '"Show informational notifications"': '"显示信息通知"',
+    '"Show notices about Git operations. The status bar still shows updates when this is off."':
+        '"显示关于 Git 操作的通知。关闭后状态栏仍会显示更新。"',
+    '"Show error notifications"': '"显示错误通知"',
+    '"Show error notices for Git operations."': '"显示 Git 操作的错误通知。"',
+    '"Show notifications when nothing changed"': '"无更改时显示通知"',
+    '"Also notify when a commit or push finds no changes."':
+        '"当提交或推送没有更改时也进行通知。"',
+    '"Restart Obsidian for this change to take effect."':
+        '"重启 Obsidian 以使此更改生效。"',
+    '"Add Stage, Unstage, and Add to .gitignore actions to the file menu."':
+        '"将暂存、取消暂存和添加到 .gitignore 操作添加到文件菜单。"',
+    '"Commit-and-sync and pull update submodules. Tracking branches must be configured for each submodule."':
+        '"提交并同步和拉取会更新子模块。必须为每个子模块配置跟踪分支。"',
+    '"Recurse checkout on submodules when switching the root repository."':
+        '"切换根仓库时递归检出子模块。"',
+    '"Limit file operations to the vault"': '"将文件操作限制在库内"',
+    '"Limit status, staging, unstaging, discarding, and submodule updates to the vault where possible. Configured auto commit globs take precedence for automatic staging. Repository history and remote actions remain repository-wide."':
+        '"尽可能将状态、暂存、取消暂存、放弃更改和子模块更新限制在库内。已配置的自动提交 glob 在自动暂存时优先。仓库历史和远程操作仍作用于整个仓库。"',
+    '"One repository-relative Git glob per line, with / as the separator. For example, scripts/** matches a folder and **/*.tmp matches files anywhere. An empty include list stages no unstaged files."':
+        '"每行一个相对于仓库的 Git glob，使用 / 作为分隔符。例如 scripts/** 匹配一个文件夹，**/*.tmp 匹配任意位置的文件。包含列表为空时不暂存任何未暂存文件。"',
+    '"How to integrate remote commits."': '"如何整合远程提交。"',
+    '"Auto-stash changes when rebasing"': '"变基时自动暂存更改"',
+    '"Stash local changes before rebasing and restore them afterward. Restoring may produce conflicts."':
+        '"在变基前暂存本地更改，之后再恢复。恢复时可能产生冲突。"',
+    '"Choose which side to favor when pulling remote changes."':
+        '"选择拉取远程更改时倾向哪一方。"',
+    '"Show merge conflict resolution"': '"显示合并冲突解决"',
+    '"Choose where conflict highlights and resolution buttons appear."':
+        '"选择冲突高亮和解决按钮出现的位置。"',
+    '"Show line changes in the status bar"': '"在状态栏显示行更改"',
+    '"Split mode creates an editable diff in the editor, which may differ from Git\'s diff."':
+        '"分屏模式在编辑器中创建可编辑的差异，可能与 Git 的差异不同。"',
+    '"Show author"': '"显示作者"',
+    '"Show the commit author in the history view."':
+        '"在历史记录视图中显示提交作者。"',
+    // 下拉选项标签与说明链接文本
+    '"Exclude matches"': '"排除匹配"',
+    '"Include matches"': '"包含匹配"',
+    '"Moment.js documentation"': '"Moment.js 文档"',
+    '"Feature guide and quick examples"': '"功能指南和快速示例"',
+    // 编辑器/行作者信息的补充说明
+    '"By default (deactivated), each line only shows the newest commit where it was changed."':
+        '"默认情况下（未启用），每行仅显示最近修改它的提交。"',
+    '"Hide everything, to only show the age-colored sidebar."':
+        '"隐藏所有内容，仅显示按年龄着色的侧边栏。"',
+    '"The CSS color of the gutter text."': '"侧边栏文本的 CSS 颜色。"',
+    "\"Whitespace and newlines are interpreted as part of the document and in changes by default (hence not ignored). This makes the last line being shown as 'changed' when a new subsequent line is added, even if the previously last line's text is the same.\"":
+        '"默认情况下，空白和换行被视为文档及其更改的一部分（因此不会被忽略）。这会导致在新的一行添加后，原先的最后一行即使在文本相同的情况下也显示为“已更改”。"',
+    "\"If you don't care about purely-whitespace changes (e.g. list nesting / quote indentation changes), then activating this will provide more meaningful change detection.\"":
+        '"如果您不在意纯空白的更改（例如列表嵌套／引用缩进变化），启用此项将提供更有意义的更改检测。"',
+    "\"Supports 'rgb(r,g,b)', 'hsl(h,s,l)', hex (#) and named colors (e.g. 'black', 'purple'). Color preview: \"":
+        '"支持 \'rgb(r,g,b)\'、\'hsl(h,s,l)\'、十六进制（#）和命名颜色（例如 \'black\'、\'purple\'）。颜色预览："',
 };
 
 // 需要特殊处理的模板字符串（包含换行等）
@@ -697,6 +839,93 @@ const TEMPLATE_TRANSLATIONS = [
         // Use "\\" instead of "/" on Windows.
         search: /Use "\\\\" instead of "\/" on Windows\./g,
         replace: '在 Windows 上使用 "\\\\" 代替 "/"。',
+    },
+    // ========== 上游 2.43.0 新声明式设置：动态名称/描述 ==========
+    // 说明：构建产物中的插值变量会被 minify 重命名，故用捕获组 (\$\{[^}]+\}) + $1
+    // 保留原始插值表达式，避免硬编码 minified 变量名（参见 Sync_i18n.md 第 5 节）。
+    {
+        // Auto ${automatic} interval (minutes)
+        search: /`Auto (\$\{[^}]+\}) interval \(minutes\)`/g,
+        replace: "`自动$1间隔（分钟）`",
+    },
+    {
+        // Auto ${automatic} after stopping file edits
+        search: /`Auto (\$\{[^}]+\}) after stopping file edits`/g,
+        replace: "`自动$1停止编辑文件后`",
+    },
+    {
+        // Requires the ${automatic} interval not to be 0. ...
+        search: /`Requires the (\$\{[^}]+\}) interval not to be 0\. Waits for file edits to stop before the next auto (\$\{[^}]+\})\.`/g,
+        replace: "`要求$1间隔不为 0。会等待文件编辑停止后再进行下一次自动$2。`",
+    },
+    {
+        // Start the automatic ${automatic} timer from the latest commit
+        search: /`Start the automatic (\$\{[^}]+\}) timer from the latest commit`/g,
+        replace: "`从最新提交开始自动$1计时`",
+    },
+    {
+        // Sets the last auto ${automatic} timestamp ...
+        search: /`Sets the last auto (\$\{[^}]+\}) timestamp to the latest commit timestamp, reducing the frequency after manual commits\.`/g,
+        replace: "`将上次自动$1的时间戳设为最新提交的时间戳，减少手动提交后的自动$1频率。`",
+    },
+    {
+        // Auto ${automatic} glob mode
+        search: /`Auto (\$\{[^}]+\}) glob mode`/g,
+        replace: "`自动$1 glob 模式`",
+    },
+    {
+        // Globs for auto ${automatic}
+        search: /`Globs for auto (\$\{[^}]+\})`/g,
+        replace: "`自动$1的 glob 列表`",
+    },
+    {
+        // Commit message on auto ${automatic}
+        search: /`Commit message on auto (\$\{[^}]+\})`/g,
+        replace: "`自动$1的提交信息`",
+    },
+    {
+        // ...${automatic} 变化描述模板：... changes every X minutes. Set to 0 to disable.
+        search: /} changes every X minutes\. Set to 0 to disable\./g,
+        replace: "} 每 X 分钟更改一次。设置为 0 以禁用。",
+    },
+    {
+        // 三元表达式内 "Commit"（短字符串，需上下文精确匹配）
+        search: /differentIntervalCommitAndPush\?"Commit":"提交并同步"/g,
+        replace: 'differentIntervalCommitAndPush?"提交":"提交并同步"',
+    },
+    // ========== 设置页面标题（page 名称 + 描述整段匹配，规避短字符串误替换） ==========
+    {
+        search: /name:"Commit",desc:"Commit messages and placeholders\."/g,
+        replace: 'name:"提交",desc:"提交信息与占位符。"',
+    },
+    {
+        search: /name:"Sync",desc:"Pull, merge, and commit-and-sync behavior\."/g,
+        replace: 'name:"同步",desc:"拉取、合并和提交并同步行为。"',
+    },
+    {
+        search: /name:"Editor",desc:"Merge conflict resolution, hunk controls, and line author information\."/g,
+        replace: 'name:"编辑器",desc:"合并冲突解决、代码块控制和行作者信息。"',
+    },
+    {
+        search: /name:"Views",desc:"History, source control, and diff views\."/g,
+        replace: 'name:"视图",desc:"历史记录、源代码管理和差异视图。"',
+    },
+    {
+        search: /name:"Interface",desc:"Notifications, status bar, and file menu\."/g,
+        replace: 'name:"界面",desc:"通知、状态栏和文件菜单。"',
+    },
+    {
+        search: /name:"Identity",desc:"Authentication and commit author\."/g,
+        replace: 'name:"身份",desc:"认证与提交作者。"',
+    },
+    // ========== 分组标题（短词，用上下文精确匹配） ==========
+    {
+        search: /heading:"Pull"/g,
+        replace: 'heading:"拉取"',
+    },
+    {
+        search: /heading:"Debugging"/g,
+        replace: 'heading:"调试"',
     },
 ];
 

@@ -50,7 +50,7 @@ function getNestedValue(obj: Record<string, unknown>, path: string): string | un
  * Supports {{variable}} syntax
  */
 function replaceTemplates(str: string, vars: Record<string, string | number>): string {
-    return str.replace(/\{\{(\w+)\}\}/g, (_, key) => {
+    return str.replace(/\{\{(\w+)\}\}/g, (_, key: string) => {
         return vars[key] !== undefined ? String(vars[key]) : `{{${key}}}`;
     });
 }
@@ -63,11 +63,11 @@ function replaceTemplates(str: string, vars: Record<string, string | number>): s
  */
 export function t(key: string, vars?: Record<string, string | number>): string {
     const lang = languages[currentLanguage];
-    let text = getNestedValue(lang as unknown as Record<string, unknown>, key);
+    let text = getNestedValue(lang, key);
     
     // Fallback to English if not found in current language
     if (text === undefined && currentLanguage !== "en") {
-        text = getNestedValue(en as unknown as Record<string, unknown>, key);
+        text = getNestedValue(en, key);
     }
     
     // Return key if translation not found

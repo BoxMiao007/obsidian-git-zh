@@ -57,7 +57,6 @@ export const TRANSLATIONS: Record<string, string> = {
     "Custom base path (Git repository path)": "自定义基础路径（Git 仓库路径）",
     "Custom Git directory path (Instead of '.git')": "自定义 Git 目录路径（替代 '.git'）",
     "Disable on this device": "在此设备上禁用",
-    "Line author information": "行作者信息",
     "Follow movement and copies across files and commits": "跟踪跨文件和提交的移动和复制",
     "Show commit hash": "显示提交哈希",
     "Author name display": "作者名称显示",
@@ -162,7 +161,6 @@ export const TRANSLATIONS: Record<string, string> = {
     "Changes": "更改",
     "Recently Pulled Files": "最近拉取的文件",
     "Commit Message": "提交信息",
-    "Commit-and-sync": "提交并同步",
     "Stage all": "全部暂存",
     "Unstage all": "全部取消暂存",
     "Change Layout": "更改布局",
@@ -171,7 +169,6 @@ export const TRANSLATIONS: Record<string, string> = {
     "Unstage": "取消暂存",
     "Discard": "放弃",
     "Push": "推送",
-    "Pull": "拉取",
     "Refresh": "刷新",
     "Clear": "清除",
 
