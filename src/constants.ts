@@ -16,6 +16,7 @@ export const DEFAULT_SETTINGS: ObsidianGitSettings = {
     autoPushInterval: 0,
     autoPullInterval: 0,
     autoPullOnBoot: false,
+    gitTimeout: 120,
     autoCommitGlobMode: "exclude",
     autoCommitGlobs: "",
     disablePush: false,
