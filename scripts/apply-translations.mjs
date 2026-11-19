@@ -59,6 +59,9 @@ const TRANSLATIONS = {
     '"Update submodules"': '"更新子模块"',
     '"Submodule recurse checkout/switch"': '"子模块递归检出/切换"',
     '"HTTP/HTTPS Proxy URL"': '"HTTP/HTTPS 代理 URL"',
+    '"Git inactivity timeout (seconds)"': '"Git 无输出超时（秒）"',
+    '"Abort Git commands after this many seconds without output. Progress output resets the timer. Set to 0 to disable. Restart Obsidian to apply."':
+        '"Git 命令在指定时间内没有输出时将被中止。每次输出进度都会重新计时。设为 0 可禁用；重启 Obsidian 后生效。"',
     '"Custom Git binary path"': '"自定义 Git 二进制路径"',
     '"Additional environment variables"': '"额外的环境变量"',
     '"Additional PATH environment variable paths"':
@@ -362,8 +365,11 @@ const TRANSLATIONS = {
         '"这些设置通常不需要更改，但对于特殊设置可能是必需的。"',
     '"Not supported files will be opened by default app!"':
         '"不支持的文件将使用默认应用打开！"',
-    '"Type your message and select optional the version with the added date."':
-        '"输入您的消息，并可选择添加日期的版本。"',
+    '"Type your commit message"': '"输入提交信息"',
+    '"Prefix date"': '"在开头加日期"',
+    '"Suffix date"': '"在末尾加日期"',
+    '"Commit with the date prefixed"': '"在提交信息开头加上日期并提交"',
+    '"Commit with the date suffixed"': '"在提交信息末尾加上日期并提交"',
     '"This branch isn\'t merged into HEAD. Force delete?"':
         '"此分支未合并到 HEAD。强制删除？"',
     '"Specify depth of clone. Leave empty for full clone."':
@@ -926,6 +932,28 @@ const TEMPLATE_TRANSLATIONS = [
     {
         search: /heading:"Debugging"/g,
         replace: 'heading:"调试"',
+    },
+    // ========== 多行提交信息窗口（Modal，上游 #1239） ==========
+    {
+        // 主按钮 "Commit"（需结合按钮上下文，避免全局替换短字符串）
+        search: /\{cls:"mod-cta",text:"Commit",attr:/g,
+        replace: '{cls:"mod-cta",text:"提交",attr:',
+    },
+    {
+        // 取消按钮（"Cancel" 短字符串禁止全局替换，仅在此按钮上下文翻译）
+        search: /createEl\("button",\{text:"Cancel"\}\)/g,
+        replace: 'createEl("button",{text:"取消"})',
+    },
+    {
+        search: /`Expected a vault-relative path: "(\$\{[^}]+\})"`/g,
+        replace: "`应使用相对于 Obsidian 库的路径，实际收到：“$1”`",
+    },
+    // ========== Git 无输出超时提示 ==========
+    {
+        // `Git command timed out after ${x} second${...} without output. ...`
+        // 只保留秒数插值；英文复数后缀插值在中文中无意义，直接省略。
+        search: /`Git command timed out after (\$\{[^}]+\}) second\$\{[^}]+\} without output\. Check for pending authentication, a locked SSH agent, or an unreachable remote\. Increase or disable the Git inactivity timeout in settings if needed\.`/g,
+        replace: "`Git 命令连续 $1 秒无输出后超时。请检查是否有等待中的认证、被锁定的 SSH agent 或无法访问的远程仓库。如有需要，请在设置中调整 Git 无输出超时时间。`",
     },
 ];
 
